@@ -18,11 +18,15 @@ describe("App Component", () => {
     vi.clearAllMocks();
   });
 
-  it("renders the App component with NotificationContextProvider and HomePage", () => {
+  const setupMocks = () => {
     mockHomePage.mockReturnValue(<div>Mocked HomePage</div>);
     mockNotificationContextProvider.mockImplementation(({ children }) => (
       <div>Mocked NotificationContextProvider {children}</div>
     ));
+  };
+
+  it("should render the App component with NotificationContextProvider and HomePage", () => {
+    setupMocks();
 
     render(<App />);
 
