@@ -12,11 +12,11 @@ function Title() {
   return (
     <>
       <Typography variant="h2" component="h2">
-        Welcome to Movie database!
+        Welcome to Movie Database!
       </Typography>
 
       <Typography variant="h3">
-        Total movies displayed <NumberOfMovies number={data?.length} />
+        Total Movies Displayed <NumberOfMovies number={data?.length} />
       </Typography>
 
       <Button
