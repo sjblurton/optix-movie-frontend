@@ -14,28 +14,37 @@ const mockUseSubmit = useSubmit as MockedFunction<typeof useSubmit>;
 describe("Form Component", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockUseGetMovie.mockReturnValue(mockUseGetMovieReturn);
   });
+
+  const renderForm = (selected: string | null) => {
+    render(<Form selected={selected} />);
+  };
+
+  const fillAndSubmitForm = async (review: string) => {
+    fireEvent.change(screen.getByLabelText("Review:"), {
+      target: { value: review },
+    });
+    fireEvent.click(screen.getByText("Submit"));
+  };
 
   it("renders the form with no selected movie", () => {
     mockUseGetMovie.mockReturnValue({ ...mockUseGetMovieReturn, data: null });
 
-    render(<Form selected={null} />);
+    renderForm(null);
 
     expect(screen.getByText("Please select a movie")).toBeInTheDocument();
   });
 
-  it("renders the form with a selected movie", () => {
-    mockUseGetMovie.mockReturnValue(mockUseGetMovieReturn);
-
-    render(<Form selected="1" />);
+  it("should render the form with a selected movie", () => {
+    renderForm("1");
 
     expect(screen.getByText("Selected movie: Movie 1")).toBeInTheDocument();
     expect(screen.getByText("Please leave a review below")).toBeInTheDocument();
   });
 
-  it("handles form submission successfully", async () => {
+  it("should handle form submission successfully", async () => {
     const mockOnSubmit = vi.fn();
-    mockUseGetMovie.mockReturnValue(mockUseGetMovieReturn);
     mockUseSubmit.mockReturnValue(() =>
       mockOnSubmit({
         review: "Great movie!",
@@ -43,13 +52,9 @@ describe("Form Component", () => {
       })
     );
 
-    render(<Form selected="1" />);
+    renderForm("1");
 
-    fireEvent.change(screen.getByLabelText("Review:"), {
-      target: { value: "Great movie!" },
-    });
-
-    fireEvent.click(screen.getByText("Submit"));
+    fillAndSubmitForm("Great movie!");
 
     await waitFor(() => {
       expect(mockOnSubmit).toHaveBeenCalledWith({
@@ -59,12 +64,11 @@ describe("Form Component", () => {
     });
   });
 
-  it("clears form when submission fails", async () => {
+  it("should clear form when submission fails", async () => {
     const mockOnSubmit = vi.fn().mockReturnValue({
       message: "Sorry an error occurred, please try again",
     });
 
-    mockUseGetMovie.mockReturnValue(mockUseGetMovieReturn);
     mockUseSubmit.mockReturnValue(() =>
       mockOnSubmit({
         review: "Great movie!",
@@ -72,13 +76,9 @@ describe("Form Component", () => {
       })
     );
 
-    render(<Form selected="1" />);
+    renderForm("1");
 
-    fireEvent.change(screen.getByLabelText("Review:"), {
-      target: { value: "Great movie!" },
-    });
-
-    fireEvent.click(screen.getByText("Submit"));
+    fillAndSubmitForm("Great movie!");
 
     await waitFor(() => {
       expect(mockOnSubmit).toHaveBeenCalledWith({
@@ -90,56 +90,46 @@ describe("Form Component", () => {
     expect(screen.queryByText("Great movie!")).not.toBeInTheDocument();
   });
 
-  it("throws an error when there is an error fetching the movie", () => {
+  it("should throw an error when there is an error fetching the movie", () => {
     mockUseGetMovie.mockReturnValue({
       ...mockUseGetMovieReturn,
       data: null,
       error: new Error("Fetch error"),
     });
 
-    expect(() => render(<Form selected="1" />)).toThrow("Fetch error");
+    expect(() => renderForm("1")).toThrow("Fetch error");
   });
 
-  it("displays validation error when review is too short", async () => {
-    mockUseGetMovie.mockReturnValue(mockUseGetMovieReturn);
+  it("should display validation error when review is too short", async () => {
+    renderForm("1");
 
-    render(<Form selected="1" />);
-
-    fireEvent.change(screen.getByLabelText("Review:"), {
-      target: { value: "Ba" },
-    });
-
-    fireEvent.click(screen.getByText("Submit"));
+    fillAndSubmitForm("A");
 
     await waitFor(() => {
       expect(
-        screen.getByText("Review must be at least 3 characters long")
+        screen.getByText("Review must be at least 3 characters long.")
       ).toBeInTheDocument();
     });
   });
 
-  it("displays validation error when review is too long", async () => {
-    mockUseGetMovie.mockReturnValue(mockUseGetMovieReturn);
+  it("should display validation error when review is too long", async () => {
+    renderForm("1");
 
-    render(<Form selected="1" />);
-
-    fireEvent.change(screen.getByLabelText("Review:"), {
-      target: { value: "A".repeat(101) },
-    });
-
-    fireEvent.click(screen.getByText("Submit"));
+    fillAndSubmitForm(
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    );
 
     await waitFor(() => {
       expect(
-        screen.getByText("Review must be at most 100 characters long")
+        screen.getByText("Review must be at most 100 characters long.")
       ).toBeInTheDocument();
     });
   });
 
-  it("displays message 'Please select a movie' when no movie is selected", async () => {
+  it("should display message 'Please select a movie' when no movie is selected", async () => {
     mockUseGetMovie.mockReturnValue({ ...mockUseGetMovieReturn, data: null });
 
-    render(<Form selected={null} />);
+    renderForm(null);
 
     expect(screen.queryByText("Submit")).not.toBeInTheDocument();
 

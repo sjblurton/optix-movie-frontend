@@ -1,11 +1,10 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
-import get from "lodash.get";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import useGetMovie from "../../hooks/useGetMovie";
-import { FormValues } from "./FormTypes";
+import { FormValues } from "./@types/form-types";
 import useSubmit from "./hooks/useSubmit";
-import { validateReview, validateSelected } from "./validation";
+import { isReviewValid, isSelectedValid } from "./validation/validation";
 
 function Form({ selected }: { selected: string | null }) {
   const {
@@ -34,8 +33,7 @@ function Form({ selected }: { selected: string | null }) {
     }
   }, [selected, setValue]);
 
-  const errorMessage =
-    get(errors, "review.message") || get(errors, "selected.message");
+  const errorMessage = errors.review?.message ?? errors.selected?.message;
 
   return (
     <Box
@@ -48,7 +46,7 @@ function Form({ selected }: { selected: string | null }) {
       }}
       onSubmit={handleSubmit(onSubmit)}
     >
-      <input {...register("selected", { validate: validateSelected })} hidden />
+      <input {...register("selected", { validate: isSelectedValid })} hidden />
       {data ? (
         <>
           <Typography variant="body1">Selected movie: {data.title}</Typography>
@@ -57,7 +55,7 @@ function Form({ selected }: { selected: string | null }) {
             label="Review:"
             multiline
             {...register("review", {
-              validate: validateReview,
+              validate: isReviewValid,
             })}
             error={Boolean(errorMessage)}
             helperText={errorMessage}
