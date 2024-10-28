@@ -9,8 +9,24 @@ vi.mock("../../hooks/useGetMovies");
 const mockUseGetMovies = useGetMovies as MockedFunction<typeof useGetMovies>;
 
 describe("Title Component", () => {
-  it("renders correctly", () => {
-    mockUseGetMovies.mockReturnValue(mockUseGetMoviesReturn);
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  const setupMocks = (
+    returnValue: Partial<ReturnType<typeof useGetMovies>>
+  ) => {
+    mockUseGetMovies.mockReturnValue({
+      // @ts-expect-error - data is not used in this test
+      data: null,
+      error: null,
+      isLoading: false,
+      ...returnValue,
+    });
+  };
+
+  it("should render correctly", () => {
+    setupMocks(mockUseGetMoviesReturn);
 
     render(<Title />);
 
@@ -18,9 +34,9 @@ describe("Title Component", () => {
     expect(screen.getByText("Total movies displayed 1")).toBeInTheDocument();
   });
 
-  it("calls mutate on button click", () => {
+  it("should call mutate on button click", () => {
     const mockMutate = vi.fn();
-    mockUseGetMovies.mockReturnValue({
+    setupMocks({
       ...mockUseGetMoviesReturn,
       mutate: mockMutate,
     });
@@ -32,11 +48,9 @@ describe("Title Component", () => {
     expect(mockMutate).toHaveBeenCalled();
   });
 
-  it("throws error when there is an error", () => {
-    mockUseGetMovies.mockReturnValue({
+  it("should throw error when there is an error", () => {
+    setupMocks({
       ...mockUseGetMoviesReturn,
-      // @ts-expect-error -- It's a test so I'm not concerned about the type
-      data: null,
       error: new Error("Test Error"),
     });
 

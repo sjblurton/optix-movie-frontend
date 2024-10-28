@@ -1,7 +1,7 @@
 import { Skeleton } from "@mui/material";
 
 type NumberOfMoviesProps = {
-  number: number | undefined;
+  number?: number;
 };
 
 function NumberOfMovies({ number }: NumberOfMoviesProps) {
