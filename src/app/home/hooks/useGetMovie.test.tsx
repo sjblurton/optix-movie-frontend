@@ -13,7 +13,7 @@ describe("useGetMovie Hook", () => {
     vi.clearAllMocks();
   });
 
-  it("handles error correctly", async () => {
+  it("should handle error correctly", async () => {
     mockFetchMovie.mockRejectedValue(new Error("Test Error"));
 
     const { result } = renderHook(() => useGetMovie("1"));
@@ -23,7 +23,7 @@ describe("useGetMovie Hook", () => {
     expect(mockFetchMovie).toHaveBeenCalledWith("1");
   });
 
-  it("fetches movie successfully", async () => {
+  it("should fetch movie successfully", async () => {
     mockFetchMovie.mockResolvedValue(mockMovie);
 
     const { result } = renderHook(() => useGetMovie("1"));
@@ -33,7 +33,7 @@ describe("useGetMovie Hook", () => {
     expect(mockFetchMovie).toHaveBeenCalledWith("1");
   });
 
-  it("does not fetch movie when id is null", async () => {
+  it("should not fetch movie when id is null", async () => {
     const { result } = renderHook(() => useGetMovie(null));
 
     expect(result.current.data).toBeUndefined();
