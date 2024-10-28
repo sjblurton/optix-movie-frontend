@@ -5,7 +5,7 @@ import useSubmit from "./useSubmit";
 import { updateMovie } from "../../../../../modules/fetch/movies";
 import useNotificationContext from "../../../context/useNotificationContext";
 import useGetMovies from "../../../hooks/useGetMovies";
-import { FormValues } from "../FormTypes";
+import { FormValues } from "../@types/form-types";
 import { mockUseGetMoviesReturn } from "../../../../../modules/__mocks__/swr";
 
 vi.mock("../../../../../modules/fetch/movies");
@@ -27,12 +27,22 @@ describe("useSubmit Hook", () => {
     vi.clearAllMocks();
   });
 
-  it("submits the form successfully", async () => {
+  const setupMocks = () => {
     const mockReset = vi.fn() as UseFormReset<FormValues>;
     const mockMutate = vi.fn();
     const mockSetState = vi.fn();
 
     mockUseNotificationContext.mockReturnValue([mockState, mockSetState]);
+    mockUseGetMovies.mockReturnValue({
+      ...mockUseGetMoviesReturn,
+      mutate: mockMutate,
+    });
+
+    return { mockReset, mockMutate, mockSetState };
+  };
+
+  it("submits the form successfully", async () => {
+    const { mockReset, mockMutate, mockSetState } = setupMocks();
 
     mockUpdateMovie.mockResolvedValue({
       message: "Movie updated successfully",
@@ -62,11 +72,8 @@ describe("useSubmit Hook", () => {
   });
 
   it("handles error during form submission", async () => {
-    const mockReset = vi.fn() as UseFormReset<FormValues>;
-    const mockMutate = vi.fn();
-    const mockSetState = vi.fn();
+    const { mockReset, mockMutate, mockSetState } = setupMocks();
 
-    mockUseNotificationContext.mockReturnValue([mockState, mockSetState]);
     mockUpdateMovie.mockRejectedValue(new Error("Failed to update movie"));
 
     const { result } = renderHook(() => useSubmit(mockReset));

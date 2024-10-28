@@ -2,7 +2,7 @@ import { UseFormReset } from "react-hook-form";
 import { updateMovie } from "../../../../../modules/fetch/movies";
 import useNotificationContext from "../../../context/useNotificationContext";
 import useGetMovies from "../../../hooks/useGetMovies";
-import { FormValues } from "../FormTypes";
+import { FormValues } from "../@types/form-types";
 
 function useSubmit(reset: UseFormReset<FormValues>) {
   const { mutate } = useGetMovies();
