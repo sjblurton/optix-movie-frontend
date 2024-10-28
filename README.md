@@ -8,9 +8,10 @@ This is the frontend project for the Optix UI tech test. It includes a React app
 - [Frontend Links](#frontend-links)
 - [Why useSWR](#why-useswr)
 - [Why React Hook Form](#why-react-hook-form)
+- [Why Zod](#why-zod)
+- [Why Add Eslint](#why-add-eslint)
 - [Why Vitest](#why-vitest)
 - [Coverage Tests](#coverage-tests)
-- [Zod](#zod)
 - [Error Boundaries](#error-boundaries)
 - [Loading](#loading)
 - [Acceptance Criteria](#acceptance-criteria)
@@ -19,13 +20,13 @@ This is the frontend project for the Optix UI tech test. It includes a React app
 
 - Deployed: [https://optix-movies-api.onrender.com/](https://optix-movies-api.onrender.com/)
 - Docker Image: `docker pull sjblurton/optix-tech-test-api`
-- GitHub: [https://github.com/sjblurton/optix-movies-api](https://github.com/sjblurton/optix-movies-api)
+- GitHub: [sjblurton/optix-movies-api](https://github.com/sjblurton/optix-movies-api)
 
 ## Frontend Links
 
-- deployed: TBA
+- deployed: [https://optix-movie-app.netlify.app/](https://optix-movie-app.netlify.app/)
 - Docker Image: `docker pull sjblurton/optix-tech-test-frontend`
-- GitHub: TBA
+- GitHub: [sjblurton/optix-movie-frontend](https://github.com/sjblurton/optix-movie-frontend)
 
 ## Why useSWR
 
@@ -37,6 +38,14 @@ I think your previous API might have been built to see if I know how to use `use
 
 React Hook Form handles all the hard work with forms. For more complex forms, I would use Zod for schemas. But since this form is simple, I used the built-in validation.
 
+## Why Zod
+
+Zod is my preferred way of validating data as it's type-safe and you can auto-generate the types.
+
+## Why Add Eslint
+
+It's very easy to miss things when writing code. I typically set up ESLint and GitHub Actions to protect myself and ensure that everyone on the team writes code in a consistent pattern. This process should be democratic and flexible, meaning we can change the rules as long as we all agree.
+
 ## Why Vitest
 
 I had never used Vitest before but had read great things about it. I had been using Jest, but Vitest is a lot better, and I will use it in the future. Since this was my first time using Vite, it made sense to use Vitest.
@@ -46,10 +55,6 @@ I had never used Vitest before but had read great things about it. I had been us
 | File      | % Stmts | % Branch | % Funcs | % Lines |
 | --------- | ------- | -------- | ------- | ------- |
 | All files | 97.59   | 93.33    | 96.96   | 97.5    |
-
-## Zod
-
-Zod is my preferred way of validating data as it's type-safe and you can auto-generate the types.
 
 ## Error Boundaries
 
