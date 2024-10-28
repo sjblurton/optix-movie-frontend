@@ -8,8 +8,8 @@ function useSubmit(reset: UseFormReset<FormValues>) {
   const { mutate } = useGetMovies();
   const [, setState] = useNotificationContext();
 
-  async function onSubmit({ review, selected }: FormValues) {
-    const response = await updateMovie(selected, review);
+  async function onSubmit({ review, selectedMovieId }: FormValues) {
+    const response = await updateMovie(selectedMovieId, review);
     reset();
     setState({
       isOpen: true,

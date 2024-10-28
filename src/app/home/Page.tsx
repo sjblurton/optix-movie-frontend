@@ -9,19 +9,19 @@ import Notification from "./components/Notification/Notification";
 import ResponsiveModalWrapper from "./components/ResponsiveModalWrapper/ResponsiveModalWrapper";
 
 function HomePage() {
-  const [selected, setSelected] = useState<string | null>(null);
+  const [selectedMovieId, setSelectedMovieId] = useState<string | null>(null);
 
   return (
     <ErrorBoundary fallback={<Error />}>
       <Title />
       <br />
-      <Table setSelected={setSelected} />
+      <Table setSelectedMovieId={setSelectedMovieId} />
       <br />
       <ResponsiveModalWrapper
-        isOpen={Boolean(selected)}
-        handleClose={() => setSelected(null)}
+        isOpen={Boolean(selectedMovieId)}
+        handleClose={() => setSelectedMovieId(null)}
       >
-        <Form selected={selected} />
+        <Form selectedMovieId={selectedMovieId} />
       </ResponsiveModalWrapper>
       <Notification />
     </ErrorBoundary>

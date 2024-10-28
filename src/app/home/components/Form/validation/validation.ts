@@ -11,7 +11,7 @@ export const isReviewValid = (value: string): string | true => {
   return true;
 };
 
-export const isSelectedValid = (value: string): string | true => {
+export const isSelectedMovieIdValid = (value: string): string | true => {
   if (!value) {
     return "Please select a movie";
   }

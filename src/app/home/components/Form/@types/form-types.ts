@@ -1,4 +1,4 @@
 export type FormValues = {
-  selected: string;
+  selectedMovieId: string;
   review: string;
 };

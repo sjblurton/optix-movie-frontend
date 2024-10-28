@@ -26,10 +26,11 @@ describe("HomePage Integration Test", () => {
     vi.clearAllMocks();
   });
 
-  it("renders the HomePage and interacts with components", async () => {
+  const setupMocks = () => {
     const mockSetState = vi.fn();
 
     mockUseGetMovies.mockReturnValue(mockUseGetMoviesReturn);
+
     mockUseNotificationContext.mockReturnValue([
       {
         isOpen: true,
@@ -37,10 +38,18 @@ describe("HomePage Integration Test", () => {
       },
       mockSetState,
     ]);
+
     mockFetchMovie.mockResolvedValue(mockMovie);
+
     mockUpdateMovie.mockResolvedValue({
       message: "Movie updated successfully",
     });
+
+    return { mockSetState };
+  };
+
+  it("should render the HomePage and interacts with components", async () => {
+    setupMocks();
 
     render(<HomePage />);
 
@@ -69,7 +78,7 @@ describe("HomePage Integration Test", () => {
     });
   });
 
-  it("handles error state correctly", async () => {
+  it("should handle error state correctly", async () => {
     mockUseGetMovies.mockReturnValue({
       ...mockUseGetMoviesReturn,
       error: new Error("Failed to fetch movies"),

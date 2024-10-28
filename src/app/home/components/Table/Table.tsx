@@ -5,9 +5,9 @@ import useGetMovies from "../../hooks/useGetMovies";
 import { useColumns } from "./hooks/useColumns";
 
 function Table({
-  setSelected,
+  setSelectedMovieId,
 }: {
-  setSelected: React.Dispatch<React.SetStateAction<string | null>>;
+  setSelectedMovieId: React.Dispatch<React.SetStateAction<string | null>>;
 }) {
   const { data, error, isLoading } = useGetMovies();
   const columns = useColumns();
@@ -24,7 +24,7 @@ function Table({
     <>
       <DataGrid
         onRowClick={(params) => {
-          setSelected(params.id.toString());
+          setSelectedMovieId(params.id.toString());
         }}
         sx={{
           "& .Mui-selected": {

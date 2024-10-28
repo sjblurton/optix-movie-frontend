@@ -28,7 +28,7 @@ describe("Table Component", () => {
   it("should render loading state correctly", () => {
     setupMocks({ isLoading: true });
 
-    render(<Table setSelected={vi.fn()} />);
+    render(<Table setSelectedMovieId={vi.fn()} />);
 
     expect(screen.getByTestId("skeleton")).toBeInTheDocument();
   });
@@ -36,18 +36,20 @@ describe("Table Component", () => {
   it("should throw an error when there is an error", () => {
     setupMocks({ error: new Error("Test Error") });
 
-    expect(() => render(<Table setSelected={vi.fn()} />)).toThrow("Test Error");
+    expect(() => render(<Table setSelectedMovieId={vi.fn()} />)).toThrow(
+      "Test Error"
+    );
   });
 
   it("should render data grid correctly", () => {
     setupMocks(mockUseGetMoviesReturn);
 
-    const setSelected = vi.fn();
-    render(<Table setSelected={setSelected} />);
+    const setSelectedMovieId = vi.fn();
+    render(<Table setSelectedMovieId={setSelectedMovieId} />);
 
     expect(screen.getByText("Movie 1")).toBeInTheDocument();
 
     fireEvent.click(screen.getByText("Movie 1"));
-    expect(setSelected).toHaveBeenCalledWith("1");
+    expect(setSelectedMovieId).toHaveBeenCalledWith("1");
   });
 });

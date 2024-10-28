@@ -17,8 +17,8 @@ describe("Form Component", () => {
     mockUseGetMovie.mockReturnValue(mockUseGetMovieReturn);
   });
 
-  const renderForm = (selected: string | null) => {
-    render(<Form selected={selected} />);
+  const renderForm = (selectedMovieId: string | null) => {
+    render(<Form selectedMovieId={selectedMovieId} />);
   };
 
   const fillAndSubmitForm = async (review: string) => {

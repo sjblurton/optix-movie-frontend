@@ -58,7 +58,7 @@ describe("useSubmit Hook", () => {
     await act(async () => {
       const response = await result.current({
         review: "Great movie!",
-        selected: "1",
+        selectedMovieId: "1",
       });
       expect(response).toEqual({ message: "Movie updated successfully" });
     });
@@ -80,7 +80,7 @@ describe("useSubmit Hook", () => {
 
     await act(async () => {
       try {
-        await result.current({ review: "Great movie!", selected: "1" });
+        await result.current({ review: "Great movie!", selectedMovieId: "1" });
       } catch (error) {
         expect(error).toEqual(new Error("Failed to update movie"));
       }

@@ -4,9 +4,9 @@ import { useForm } from "react-hook-form";
 import useGetMovie from "../../hooks/useGetMovie";
 import { FormValues } from "./@types/form-types";
 import useSubmit from "./hooks/useSubmit";
-import { isReviewValid, isSelectedValid } from "./validation/validation";
+import { isReviewValid, isSelectedMovieIdValid } from "./validation/validation";
 
-function Form({ selected }: { selected: string | null }) {
+function Form({ selectedMovieId }: { selectedMovieId: string | null }) {
   const {
     handleSubmit,
     register,
@@ -19,7 +19,7 @@ function Form({ selected }: { selected: string | null }) {
     },
   });
 
-  const { data, error } = useGetMovie(selected);
+  const { data, error } = useGetMovie(selectedMovieId);
 
   const onSubmit = useSubmit(reset);
 
@@ -28,12 +28,13 @@ function Form({ selected }: { selected: string | null }) {
   }
 
   useEffect(() => {
-    if (selected) {
-      setValue("selected", selected);
+    if (selectedMovieId) {
+      setValue("selectedMovieId", selectedMovieId);
     }
-  }, [selected, setValue]);
+  }, [selectedMovieId, setValue]);
 
-  const errorMessage = errors.review?.message ?? errors.selected?.message;
+  const errorMessage =
+    errors.review?.message ?? errors.selectedMovieId?.message;
 
   return (
     <Box
@@ -46,7 +47,10 @@ function Form({ selected }: { selected: string | null }) {
       }}
       onSubmit={handleSubmit(onSubmit)}
     >
-      <input {...register("selected", { validate: isSelectedValid })} hidden />
+      <input
+        {...register("selectedMovieId", { validate: isSelectedMovieIdValid })}
+        hidden
+      />
       {data ? (
         <>
           <Typography variant="body1">Selected movie: {data.title}</Typography>
