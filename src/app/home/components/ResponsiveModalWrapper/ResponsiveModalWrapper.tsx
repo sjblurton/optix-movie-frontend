@@ -1,4 +1,5 @@
 import { Box, Modal as MuiModal, useMediaQuery } from "@mui/material";
+import React from "react";
 
 function ResponsiveModalWrapper({
   children,
@@ -10,6 +11,7 @@ function ResponsiveModalWrapper({
   handleClose: () => void;
 }) {
   const isMobile = useMediaQuery("(max-width: 600px)");
+
   if (isMobile) {
     return (
       <MuiModal
@@ -41,4 +43,4 @@ function ResponsiveModalWrapper({
   return <>{children}</>;
 }
 
-export default ResponsiveModalWrapper;
+export default React.memo(ResponsiveModalWrapper);
