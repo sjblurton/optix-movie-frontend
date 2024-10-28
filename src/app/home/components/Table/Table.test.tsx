@@ -9,32 +9,38 @@ vi.mock("../../hooks/useGetMovies");
 const mockUseGetMovies = useGetMovies as MockedFunction<typeof useGetMovies>;
 
 describe("Table Component", () => {
-  it("renders loading state correctly", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  const setupMocks = (
+    returnValue: Partial<ReturnType<typeof useGetMovies>>
+  ) => {
     mockUseGetMovies.mockReturnValue({
       // @ts-expect-error - data is not used in this test
       data: null,
       error: null,
-      isLoading: true,
+      isLoading: false,
+      ...returnValue,
     });
+  };
+
+  it("should render loading state correctly", () => {
+    setupMocks({ isLoading: true });
 
     render(<Table setSelected={vi.fn()} />);
 
     expect(screen.getByTestId("skeleton")).toBeInTheDocument();
   });
 
-  it("throws an error when there is an error", () => {
-    mockUseGetMovies.mockReturnValue({
-      // @ts-expect-error - data is not used in this test
-      data: null,
-      error: new Error("Test Error"),
-      isLoading: false,
-    });
+  it("should throw an error when there is an error", () => {
+    setupMocks({ error: new Error("Test Error") });
 
     expect(() => render(<Table setSelected={vi.fn()} />)).toThrow("Test Error");
   });
 
-  it("renders data grid correctly", () => {
-    mockUseGetMovies.mockReturnValue(mockUseGetMoviesReturn);
+  it("should render data grid correctly", () => {
+    setupMocks(mockUseGetMoviesReturn);
 
     const setSelected = vi.fn();
     render(<Table setSelected={setSelected} />);

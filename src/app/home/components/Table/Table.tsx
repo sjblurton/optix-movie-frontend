@@ -2,7 +2,7 @@ import { DataGrid } from "@mui/x-data-grid";
 
 import { Skeleton } from "@mui/material";
 import useGetMovies from "../../hooks/useGetMovies";
-import { columns } from "./constants/columns";
+import { useColumns } from "./hooks/useColumns";
 
 function Table({
   setSelected,
@@ -10,6 +10,7 @@ function Table({
   setSelected: React.Dispatch<React.SetStateAction<string | null>>;
 }) {
   const { data, error, isLoading } = useGetMovies();
+  const columns = useColumns();
 
   if (isLoading) {
     return <Skeleton width="100%" height={400} data-testid="skeleton" />;
@@ -44,6 +45,7 @@ function Table({
           },
         }}
         pageSizeOptions={[5]}
+        disableMultipleRowSelection
       />
     </>
   );
