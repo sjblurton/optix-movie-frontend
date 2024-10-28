@@ -41,7 +41,7 @@ describe("useSubmit Hook", () => {
     return { mockReset, mockMutate, mockSetState };
   };
 
-  it("submits the form successfully", async () => {
+  it("should submit the form successfully", async () => {
     const { mockReset, mockMutate, mockSetState } = setupMocks();
 
     mockUpdateMovie.mockResolvedValue({
@@ -71,7 +71,7 @@ describe("useSubmit Hook", () => {
     expect(mockMutate).toHaveBeenCalled();
   });
 
-  it("handles error during form submission", async () => {
+  it("should handle error during form submission", async () => {
     const { mockReset, mockMutate, mockSetState } = setupMocks();
 
     mockUpdateMovie.mockRejectedValue(new Error("Failed to update movie"));
