@@ -17,23 +17,29 @@ const TestComponent = () => {
 };
 
 describe("NotificationContextProvider", () => {
-  it("provides the default context value", () => {
-    render(
-      <NotificationContextProvider>
-        <TestComponent />
-      </NotificationContextProvider>
-    );
+  let renderWithProvider: (component: React.ReactNode) => void;
+
+  beforeEach(() => {
+    renderWithProvider = (component: React.ReactNode) => {
+      render(
+        <NotificationContextProvider>{component}</NotificationContextProvider>
+      );
+    };
+  });
+
+  it("should provide the default context value", () => {
+    renderWithProvider(<TestComponent />);
 
     expect(screen.getByTestId("test-div")).toBeInTheDocument();
   });
 
-  it("throws an error when used outside of NotificationContextProvider", () => {
+  it("should throw an error when used outside of NotificationContextProvider", () => {
     expect(() => render(<TestComponent />)).toThrow(
       "useNotificationContext must be used within a NotificationContextProvider"
     );
   });
 
-  it("updates the context value", () => {
+  it("should update the context value", async () => {
     const TestComponentWithUpdate = () => {
       const context = useContext(NotificationContext);
       if (!context) {
@@ -56,18 +62,14 @@ describe("NotificationContextProvider", () => {
       );
     };
 
-    render(
-      <NotificationContextProvider>
-        <TestComponentWithUpdate />
-      </NotificationContextProvider>
-    );
+    renderWithProvider(<TestComponentWithUpdate />);
 
     expect(screen.getByTestId("test-div")).toHaveTextContent("");
 
     const button = screen.getByText("Update Message");
     button.click();
 
-    waitFor(() => {
+    await waitFor(() => {
       expect(screen.getByText("Updated Message")).toBeInTheDocument();
     });
   });

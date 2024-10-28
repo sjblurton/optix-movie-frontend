@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useMemo, useState } from "react";
 
 type State = {
   isOpen: boolean;
@@ -17,10 +17,15 @@ function NotificationContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const value = useState<State>({
+  const [state, setState] = useState<State>({
     isOpen: false,
     message: null,
   });
+
+  const value = useMemo<NotificationContextType>(
+    () => [state, setState],
+    [state]
+  );
 
   return (
     <NotificationContext.Provider value={value}>

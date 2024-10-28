@@ -17,22 +17,23 @@ const NotificationContextProvider = ({ children }: { children: ReactNode }) => {
 };
 
 describe("useNotificationContext Hook", () => {
-  it("throws an error when used outside of NotificationContextProvider", () => {
-    try {
-      renderHook(() => useNotificationContext());
-    } catch (error) {
-      expect(error).toEqual(
-        new Error(
-          "useNotificationContext must be used within a NotificationContextProvider"
-        )
-      );
-    }
+  let renderUseNotificationContext: () => ReturnType<typeof renderHook>;
+
+  beforeEach(() => {
+    renderUseNotificationContext = () =>
+      renderHook(() => useNotificationContext(), {
+        wrapper: NotificationContextProvider,
+      });
   });
 
-  it("returns context value when used within NotificationContextProvider", () => {
-    const { result } = renderHook(() => useNotificationContext(), {
-      wrapper: NotificationContextProvider,
-    });
+  it("should throw an error when used outside of NotificationContextProvider", () => {
+    expect(() => renderHook(() => useNotificationContext())).toThrow(
+      "useNotificationContext must be used within a NotificationContextProvider"
+    );
+  });
+
+  it("should return context value when used within NotificationContextProvider", () => {
+    const { result } = renderUseNotificationContext();
 
     expect(result.current).toEqual([
       { isOpen: false, message: "" },
