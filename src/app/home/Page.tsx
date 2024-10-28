@@ -1,7 +1,7 @@
 import Title from "./components/Title/Title";
 
 import { ErrorBoundary } from "react-error-boundary";
-import { Error } from "./Error/Error";
+import Error from "./Error/Error";
 import Table from "./components/Table/Table";
 import { useState } from "react";
 import Form from "./components/Form/Form";
