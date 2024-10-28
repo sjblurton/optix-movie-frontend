@@ -10,36 +10,36 @@ const mockUseNotificationContext = useNotificationContext as MockedFunction<
 >;
 
 describe("Notification Component", () => {
-  it("renders notification when open", () => {
-    mockUseNotificationContext.mockReturnValue([
-      { isOpen: true, message: "Test Message" },
-      vi.fn(),
-    ]);
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  const renderNotification = (
+    isOpen: boolean,
+    message: string | null,
+    setState = vi.fn()
+  ) => {
+    mockUseNotificationContext.mockReturnValue([{ isOpen, message }, setState]);
 
     render(<Notification />);
+  };
+
+  it("should render notification when open", () => {
+    renderNotification(true, "Test Message");
 
     expect(screen.getByText("Test Message")).toBeInTheDocument();
   });
 
-  it("does not render notification when closed", () => {
-    mockUseNotificationContext.mockReturnValue([
-      { isOpen: false, message: null },
-      vi.fn(),
-    ]);
-
-    render(<Notification />);
+  it("should not render notification when closed", () => {
+    renderNotification(false, null);
 
     expect(screen.queryByText("Test Message")).not.toBeInTheDocument();
   });
 
-  it("calls handleClose when notification is clicked", () => {
+  it("should call handleClose when notification is clicked", () => {
     const setState = vi.fn();
-    mockUseNotificationContext.mockReturnValue([
-      { isOpen: true, message: "Test Message" },
-      setState,
-    ]);
 
-    render(<Notification />);
+    renderNotification(true, "Test Message", setState);
 
     fireEvent.click(screen.getByText("Test Message"));
 
